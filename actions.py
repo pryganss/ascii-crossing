@@ -18,16 +18,29 @@
 
 
 class Action:
-    pass
+    def perform(self, engine, actor):
+        raise NotImplementedError()
 
 
 class QuitAction(Action):
-    pass
+    def perform(self, engine, actor):
+        raise SystemExit()
 
 
 class MovementAction(Action):
     def __init__(self, dy, dx):
-        super().__init__()
-
         self.dy = dy
         self.dx = dx
+
+    def perform(self, engine, actor):
+        dest_y = actor.y + self.dy
+        dest_x = actor.x + self.dx
+
+        if not engine.game_map.in_bounds(dest_y, dest_x):
+            return
+        if not engine.game_map.tiles[dest_y][dest_x]["walkable"]:
+            return
+
+        engine.render_tile(actor.y, actor.x)
+        actor.move(dest_y, dest_x)
+        engine.render_actor(actor)

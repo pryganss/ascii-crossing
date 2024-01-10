@@ -23,9 +23,9 @@ class Actor:
         self.x = x
         self.char = char
 
-    def move(self, dy, dx):
-        self.y += dy
-        self.x += dx
+    def move(self, y, x):
+        self.y = y
+        self.x = x
 
 
 class Player(Actor):

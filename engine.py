@@ -17,7 +17,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import curses
-from actions import MovementAction, QuitAction
 
 
 class Engine:
@@ -36,18 +35,8 @@ class Engine:
 
         action = self.input_handler.keydown(key)
 
-        if action is None:
-            pass
-
-        elif isinstance(action, MovementAction):
-            self.render_tile(self.actors[0].y, self.actors[0].x)
-
-            self.actors[0].move(action.dy, action.dx)
-
-            self.render_actor(self.actors[0])
-
-        elif isinstance(action, QuitAction):
-            raise SystemExit()
+        if action is not None:
+            action.perform(self, self.actors[0])
 
     def render_actor(self, actor):
         self.screen.addstr(actor.y, actor.x, actor.char)
