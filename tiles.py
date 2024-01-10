@@ -16,27 +16,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import curses
-from curses import wrapper
-from engine import Engine
-from input import InputHandler
-from actors import Player
-from map import GameMap
+
+def tile(walkable, char, t_id):
+    tile = {}
+    tile["walkable"] = walkable
+    tile["char"] = char
+    tile["id"] = t_id
+
+    return tile
 
 
-def main(screen):
-    curses.curs_set(0)
-    screen.nodelay(True)
-
-    actors = [Player(10, 10, "@")]
-
-    engine = Engine(actors, InputHandler(), screen, GameMap(30, 30))
-
-    engine.render_refresh()
-
-    while True:
-        engine.handle_input()
-
-
-if __name__ == "__main__":
-    wrapper(main)
+class Tiles:
+    GRASS = tile(True, ".", "floor")
+    TREE = tile(False, "♣", "tree")

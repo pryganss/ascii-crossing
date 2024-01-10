@@ -21,9 +21,10 @@ from actions import MovementAction, QuitAction
 
 
 class Engine:
-    def __init__(self, actors, input_handler, screen):
+    def __init__(self, actors, input_handler, screen, game_map):
         self.actors = actors
         self.input_handler = input_handler
+        self.game_map = game_map
 
         self.screen = screen
 
@@ -39,20 +40,29 @@ class Engine:
             pass
 
         elif isinstance(action, MovementAction):
+            self.render_tile(self.actors[0].y, self.actors[0].x)
+
             self.actors[0].move(action.dy, action.dx)
 
-            self.render()
+            self.render_actor(self.actors[0])
 
         elif isinstance(action, QuitAction):
             raise SystemExit()
 
-    def render(self):
-        self.screen.clear()
-
-        for actor in self.actors:
-            self.screen.addstr(actor.y, actor.x, actor.char)
-
-        #### HACK REMOVE THIS TERRIBLE IDEA ####
-        self.screen.addstr(self.actors[0].y, self.actors[0].x, self.actors[0].char)
+    def render_actor(self, actor):
+        self.screen.addstr(actor.y, actor.x, actor.char)
 
         self.screen.refresh()
+
+    def render_tile(self, y, x):
+        self.screen.addstr(y, x, self.game_map.tiles[y][x]["char"])
+
+        self.screen.refresh()
+
+    def render_refresh(self):
+        for i in range(self.game_map.height):
+            for j in range(self.game_map.height):
+                self.render_tile(i, j)
+
+        for actor in self.actors:
+            self.render_actor(actor)

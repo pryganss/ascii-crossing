@@ -16,27 +16,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import curses
-from curses import wrapper
-from engine import Engine
-from input import InputHandler
-from actors import Player
-from map import GameMap
+from tiles import Tiles
 
 
-def main(screen):
-    curses.curs_set(0)
-    screen.nodelay(True)
+class GameMap:
+    def __init__(self, height, width):
+        self.width = width
+        self.height = height
 
-    actors = [Player(10, 10, "@")]
+        tiles = [[Tiles.GRASS for i in range(width)] for j in range(height)]
 
-    engine = Engine(actors, InputHandler(), screen, GameMap(30, 30))
+        tiles[3][4] = Tiles.TREE
 
-    engine.render_refresh()
+        self.tiles = tiles
 
-    while True:
-        engine.handle_input()
-
-
-if __name__ == "__main__":
-    wrapper(main)
+    def in_bounds(self, y, x):
+        return 0 <= x < self.width and 0 <= y < self.height
