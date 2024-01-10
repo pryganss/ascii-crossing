@@ -2,10 +2,15 @@
 
 
 class Actor:
-    x = y = None
+    def __init__(self, y, x, char):
+        self.y = y
+        self.x = x
+        self.char = char
+
+    def move(self, dy, dx):
+        self.y += dy
+        self.x += dx
 
 
 class Player(Actor):
-    def __init__(self, y, x):
-        self.y = y
-        self.x = x
+    pass

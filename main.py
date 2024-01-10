@@ -11,7 +11,9 @@ def main(screen):
     curses.curs_set(0)
     screen.nodelay(True)
 
-    engine = Engine(Player(0, 0), InputHandler(), screen)
+    actors = [Player(0, 0, "@")]
+
+    engine = Engine(actors, InputHandler(), screen)
 
     engine.render()
 

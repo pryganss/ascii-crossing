@@ -5,8 +5,8 @@ from actions import MovementAction, QuitAction
 
 
 class Engine:
-    def __init__(self, player, input_handler, screen):
-        self.player = player
+    def __init__(self, actors, input_handler, screen):
+        self.actors = actors
         self.input_handler = input_handler
 
         self.screen = screen
@@ -23,8 +23,7 @@ class Engine:
             pass
 
         elif isinstance(action, MovementAction):
-            self.player.y += action.dy
-            self.player.x += action.dx
+            self.actors[0].move(action.dy, action.dx)
 
             self.render()
 
@@ -34,6 +33,7 @@ class Engine:
     def render(self):
         self.screen.clear()
 
-        self.screen.addstr(self.player.y, self.player.x, "@")
+        for actor in self.actors:
+            self.screen.addstr(actor.y, actor.x, actor.char)
 
         self.screen.refresh()
