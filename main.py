@@ -8,7 +8,7 @@ from actors import Player
 
 
 def main(screen):
-    init()
+    curses.curs_set(0)
 
     input_handler = InputHandler()
 
