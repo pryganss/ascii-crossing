@@ -5,6 +5,10 @@ class Action:
     pass
 
 
+class QuitAction(Action):
+    pass
+
+
 class MovementAction(Action):
     def __init__(self, dy, dx):
         super().__init__()

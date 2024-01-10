@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
+import curses
 from curses import wrapper
-from init import init
 from input import InputHandler
-from actions import MovementAction
+from actions import MovementAction, QuitAction
 from actors import Player
 
 
@@ -26,6 +26,9 @@ def main(screen):
         if isinstance(action, MovementAction):
             player.y += action.dy
             player.x += action.dx
+
+        elif isinstance(action, QuitAction):
+            raise SystemExit()
 
         screen.clear()
 

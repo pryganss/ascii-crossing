@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from config import INPUT
-from actions import MovementAction
+from actions import MovementAction, QuitAction
 
 
 class InputHandler:
@@ -15,5 +15,8 @@ class InputHandler:
             action = MovementAction(0, 1)
         elif key in INPUT.LEFT:
             action = MovementAction(0, -1)
+
+        elif key == "q":
+            action = QuitAction()
 
         return action
