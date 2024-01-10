@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 
-import curses
 from curses import wrapper
-
-
-class Player:
-    def __init__(self, y, x):
-        self.y = y
-        self.x = x
+from init import init
+from input import InputHandler
+from actions import MovementAction
+from actors import Player
 
 
 def main(screen):
-    curses.curs_set(0)
+    init()
+
+    input_handler = InputHandler()
 
     player = Player(5, 5)
     while True:
@@ -19,15 +18,14 @@ def main(screen):
         screen.refresh()
 
         key = screen.getkey()
+        action = input_handler.keydown(key)
 
-        if key == "KEY_UP":
-            player.y -= 1
-        elif key == "KEY_DOWN":
-            player.y += 1
-        elif key == "KEY_LEFT":
-            player.x -= 1
-        elif key == "KEY_RIGHT":
-            player.x += 1
+        if action is None:
+            continue
+
+        if isinstance(action, MovementAction):
+            player.y += action.dy
+            player.x += action.dx
 
         screen.clear()
 
