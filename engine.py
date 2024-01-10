@@ -36,4 +36,7 @@ class Engine:
         for actor in self.actors:
             self.screen.addstr(actor.y, actor.x, actor.char)
 
+        #### HACK REMOVE THIS TERRIBLE IDEA ####
+        self.screen.addstr(self.actors[0].y, self.actors[0].x, self.actors[0].char)
+
         self.screen.refresh()
