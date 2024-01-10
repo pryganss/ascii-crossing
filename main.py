@@ -9,6 +9,7 @@ from actors import Player
 
 def main(screen):
     curses.curs_set(0)
+    screen.nodelay(True)
 
     input_handler = InputHandler()
 
@@ -17,7 +18,11 @@ def main(screen):
         screen.addstr(player.y, player.x, "@")
         screen.refresh()
 
-        key = screen.getkey()
+        try:
+            key = screen.getkey()
+        except curses.error:
+            key = None
+
         action = input_handler.keydown(key)
 
         if action is None:
