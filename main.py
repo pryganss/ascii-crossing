@@ -30,7 +30,7 @@ def main(screen):
 
     actors = [Player(10, 10, "@")]
 
-    engine = Engine(actors, InputHandler(), screen, GameMap(30, 30))
+    engine = Engine(actors, InputHandler(), GameMap(30, 30))
 
     engine.render_refresh()
 

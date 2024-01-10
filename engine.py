@@ -20,16 +20,16 @@ import curses
 
 
 class Engine:
-    def __init__(self, actors, input_handler, screen, game_map):
+    def __init__(self, actors, input_handler, game_map):
         self.actors = actors
         self.input_handler = input_handler
         self.game_map = game_map
 
-        self.screen = screen
+        self.pad = curses.newpad(100, 100)
 
     def handle_input(self):
         try:
-            key = self.screen.getkey()
+            key = self.pad.getkey()
         except curses.error:
             key = None
 
@@ -39,14 +39,14 @@ class Engine:
             action.perform(self, self.actors[0])
 
     def render_actor(self, actor):
-        self.screen.addstr(actor.y, actor.x, actor.char)
+        self.pad.addstr(actor.y, actor.x, actor.char)
 
-        self.screen.refresh()
+        self.pad.refresh(0, 0, 0, 0, self.game_map.height, self.game_map.width)
 
     def render_tile(self, y, x):
-        self.screen.addstr(y, x, self.game_map.tiles[y][x]["char"])
+        self.pad.addstr(y, x, self.game_map.tiles[y][x]["char"])
 
-        self.screen.refresh()
+        self.pad.refresh(0, 0, 0, 0, self.game_map.height, self.game_map.width)
 
     def render_refresh(self):
         for i in range(self.game_map.height):
