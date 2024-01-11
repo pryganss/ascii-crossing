@@ -20,12 +20,17 @@ import curses
 
 
 class Engine:
-    def __init__(self, actors, input_handler, game_map):
+    def __init__(self, actors, input_handler, game_map, screen):
         self.actors = actors
         self.input_handler = input_handler
         self.game_map = game_map
 
         self.pad = curses.newpad(100, 100)
+
+        self.term_width = curses.COLS
+        self.term_height = curses.LINES
+
+        self.screen = screen
 
     def handle_input(self):
         try:
@@ -38,15 +43,18 @@ class Engine:
         if action is not None:
             action.perform(self, self.actors[0])
 
+        if key == "KEY_RESIZE":
+            self.resize_term()
+
     def render_actor(self, actor):
         self.pad.addstr(actor.y, actor.x, actor.char)
 
-        self.pad.refresh(0, 0, 0, 0, self.game_map.height, self.game_map.width)
+        self.pad.refresh(0, 0, 0, 0, self.term_height - 1, self.term_width - 1)
 
     def render_tile(self, y, x):
         self.pad.addstr(y, x, self.game_map.tiles[y][x]["char"])
 
-        self.pad.refresh(0, 0, 0, 0, self.game_map.height, self.game_map.width)
+        self.pad.refresh(0, 0, 0, 0, self.term_height - 1, self.term_width - 1)
 
     def render_refresh(self):
         for i in range(self.game_map.height):
@@ -55,3 +63,8 @@ class Engine:
 
         for actor in self.actors:
             self.render_actor(actor)
+
+    def resize_term(self):
+        self.term_height, self.term_width = self.screen.getmaxyx()
+
+        self.pad.refresh(0, 0, 0, 0, self.term_height - 1, self.term_width - 1)
