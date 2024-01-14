@@ -17,6 +17,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import curses
+from menu import Title, Menu
+from input import MovementAction
 
 
 class Engine:
@@ -31,6 +33,8 @@ class Engine:
         self.term_height = curses.LINES
 
         self.screen = screen
+
+        self.pad.keypad(True)
 
     def handle_input(self):
         try:
@@ -68,3 +72,28 @@ class Engine:
         self.term_height, self.term_width = self.screen.getmaxyx()
 
         self.pad.refresh(0, 0, 0, 0, self.term_height - 1, self.term_width - 1)
+
+    def menu(self):
+        title = Title(self.screen)
+        menu = Menu(self.screen)
+        selection = 0
+
+        title.Draw()
+        menu.Draw()
+        menu.Select(selection)
+
+        while True:
+            key = self.pad.getkey()
+
+            action = self.input_handler.keydown(key)
+
+            if action is not None:
+                if isinstance(action, MovementAction):
+                    selection = max(
+                        0, min(len(menu.buttons) - 1, action.dy + selection)
+                    )
+
+            menu.Select(selection)
+
+            if key == "\n":
+                return selection

@@ -22,20 +22,23 @@ from engine import Engine
 from input import InputHandler
 from actors import Player
 from map import GameMap
+import menu
 
 
 def main(screen):
     curses.curs_set(0)
-    screen.nodelay(True)
+    # screen.nodelay(True)
 
     actors = [Player(10, 10, "@")]
 
     engine = Engine(actors, InputHandler(), GameMap(30, 30), screen)
 
-    engine.render_refresh()
+    # engine.render_refresh()
 
-    while True:
-        engine.handle_input()
+    # engine.handle_input()
+    selection = engine.menu()
+    # title = menu.Title(screen)
+    # title.Draw()
 
 
 if __name__ == "__main__":
